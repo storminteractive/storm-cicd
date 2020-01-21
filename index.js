@@ -12,7 +12,8 @@ app.use(morgan('combined'));
 
 const updateCi = "/root/scripts/refresh-cicd.sh";
 const updateZone = "/root/scripts/refresh-zone-update.sh";
-const logsCmd = "/usr/bin/pm2 logs --lines 200 --nostream"
+const logsCmd = "/usr/bin/pm2 logs --nostream"
+const defaultLines = "--lines 200";
 
 const ex = (cmd,cb) =>{
     exec(cmd, (error, stdout, stderr) => {
@@ -47,12 +48,19 @@ app.all('/update/:app/', (req,res)=>{
 })
 
 app.get('/logs',(req,res)=>{
-    let r = exRet(logsCmd);
+    let r = "";
+    if(!req.query.lines){
+        r = exRet(logsCmd+" "+defaultLines);
+    } else {
+        if (!validator.isNumeric(req.query.lines)) {r = "Invalid num lines" }
+        else { r = exRet(logsCmd+" lines="+req.query.lines); }
+    }
+    
     res.send(nl2br(r));
 })
 
 app.all('*', (req,res)=>{
-    res.send(`Welcome to Storm CICD server - update cicd zone v2 or logs`);
+    res.send(`Welcome to Storm CICD server - update cicd zone v2 or logs with optional lines`);
 })
 
 https.createServer({
