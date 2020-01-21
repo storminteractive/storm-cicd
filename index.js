@@ -31,7 +31,7 @@ const lettersNumbers = (str) => {
     return(str.match(reg));
 }
 
-app.get('/update/:app/', (req,res)=>{
+app.all('/update/:app/', (req,res)=>{
     let app = req.params.app;
     if(!lettersNumbers(app)) {res.send("Invalid app name"); console.log("Invalid app name"); return; }
     res.send(`Received an update for an app ${app}`);
@@ -40,7 +40,7 @@ app.get('/update/:app/', (req,res)=>{
     if(app==="zone") ex(updateZone);
 })
 
-app.get('*', (req,res)=>{
+app.all('*', (req,res)=>{
     res.send(`Welcome to Storm CICD server - update cicd zone v2`);
 })
 
