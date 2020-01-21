@@ -11,6 +11,7 @@ app.use(morgan('combined'));
 
 const updateCi = "/root/scripts/refresh-cicd.sh";
 const updateZone = "/root/scripts/refresh-zone-update.sh";
+const logsCmd = "/usr/bin/pm2 logs --lines 100 --nostream cicd"
 
 const ex = (cmd,cb) =>{
     exec(cmd, (error, stdout, stderr) => {
@@ -55,7 +56,7 @@ app.all('/update/:app/', (req,res)=>{
 })
 
 app.get('/logs',(req,res)=>{
-    res.send(exRet("pm2 logs --lines 100 --nostream cicd"));
+    res.send(exRet(logsCmd));
 })
 
 app.all('*', (req,res)=>{
