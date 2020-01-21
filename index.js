@@ -16,11 +16,9 @@ const ex = (cmd,cb) =>{
     exec(cmd, (error, stdout, stderr) => {
         if (error) {
             console.log(`Error: ${error.message}`);
-            return false;
         }
         if (stderr) {
-            console.log(`stderr: ${stderr}`);
-            return false;
+            console.log(`Stderr: ${stderr}`);
         }
         console.log(`Success: ${stdout}`);
         if (cb) return cb();
