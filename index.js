@@ -42,7 +42,7 @@ app.get('/update/:app/', (req,res)=>{
 })
 
 app.get('*', (req,res)=>{
-    res.send(`Welcome to Storm CICD server - update appname`);
+    res.send(`Welcome to Storm CICD server - update appname v2`);
 })
 
 https.createServer({
