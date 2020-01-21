@@ -28,18 +28,7 @@ const ex = (cmd,cb) =>{
 }
 
 const exRet = (cmd) => {
-    exec(cmd, (error, stdout, stderr) => {
-        r = "";
-        if (error) {
-            r = r+"Error: "+error.message+"\n================\n";
-        }
-        if (stderr) {
-            r = r+"Stderr: "+stderr+"\n================\n";
-        }
-        r = r+stdout;
-        console.log(`TCL: exRet -> r`, r);
-        return r;
-    });
+    return execSync(cmd).toString();
 }
 
 const lettersNumbers = (str) => {
@@ -57,7 +46,8 @@ app.all('/update/:app/', (req,res)=>{
 })
 
 app.get('/logs',(req,res)=>{
-    res.send(exRet(logsCmd));
+    let r = exRet(logsCmd);
+    res.send(nl2br(r));
 })
 
 app.all('*', (req,res)=>{
