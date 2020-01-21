@@ -10,6 +10,8 @@ const app = express();
 const port = process.env.PORT || 4000;
 //app.use(morgan('combined'));
 
+const updateCommand = "/root/scripts/refresh-cicd.sh";
+
 const ex = (cmd,cb) =>{
     exec(cmd, (error, stdout, stderr) => {
         if (error) {
@@ -36,7 +38,7 @@ app.get('/update/:app/', (req,res)=>{
     if(!lettersNumbers(app)) {res.send("Invalid app name"); console.log("Invalid app name"); return; }
     res.send(`Received an update for an app ${app}`);
     console.log("Will update app "+app);
-    
+    ex(updateCommand);
 })
 
 app.get('*', (req,res)=>{
