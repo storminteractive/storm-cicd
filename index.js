@@ -1,4 +1,4 @@
-const { exec } = require("child_process");
+const { exec, execSync } = require("child_process");
 const express = require('express');
 const https = require('https');
 const morgan = require('morgan');
