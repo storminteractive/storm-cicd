@@ -30,6 +30,7 @@ const ex = (cmd,cb) =>{
 }
 
 const exRet = (cmd) => {
+    console.log(`TCL: exRet -> cmd`, cmd);
     return execSync(cmd).toString();
 }
 
