@@ -46,8 +46,8 @@ app.get('*', (req,res)=>{
 })
 
 https.createServer({
-    key: fs.readFileSync('./ssl.key'),
-    cert: fs.readFileSync('./ssl.crt')
+    key: fs.readFileSync(__dirname+'/ssl.key'),
+    cert: fs.readFileSync(__dirname+'./ssl.crt')
 }, app).listen(port,()=>{
     console.log("Listening on port "+port);
 });
