@@ -37,6 +37,7 @@ const exRet = (cmd) => {
             r = r+"Stderr: "+stderr+"\n================\n";
         }
         r = r+stdout;
+        console.log(`TCL: exRet -> r`, r);
         return r;
     });
 }
