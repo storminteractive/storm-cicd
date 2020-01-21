@@ -4,6 +4,7 @@ const https = require('https');
 const morgan = require('morgan');
 const fs = require('fs');
 const validator = require('validator');
+const nl2br  = require('nl2br');
 
 const app = express();
 const port = process.env.PORT || 4000;
