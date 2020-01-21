@@ -7,7 +7,7 @@ const validator = require('validator');
 
 const app = express();
 const port = process.env.PORT || 4000;
-//app.use(morgan('combined'));
+app.use(morgan('combined'));
 
 const updateCi = "/root/scripts/refresh-cicd.sh";
 const updateZone = "/root/scripts/refresh-zone-update.sh";
@@ -26,6 +26,20 @@ const ex = (cmd,cb) =>{
     });
 }
 
+const exRet = (cmd) => {
+    exec(cmd, (error, stdout, stderr) => {
+        r = "";
+        if (error) {
+            r = r+"Error: "+error.message+"\n================\n";
+        }
+        if (stderr) {
+            r = r+"Stderr: "+stderr+"\n================\n";
+        }
+        r = r+stdout;
+        return r;
+    });
+}
+
 const lettersNumbers = (str) => {
     let reg = /^[0-9a-zA-Z\-]+$/;
     return(str.match(reg));
@@ -40,8 +54,12 @@ app.all('/update/:app/', (req,res)=>{
     if(app==="zone") ex(updateZone);
 })
 
+app.get('/logs',(req,res)=>{
+    res.send(exRet("pm2 logs --lines 100 --nostream cicd"));
+})
+
 app.all('*', (req,res)=>{
-    res.send(`Welcome to Storm CICD server - update cicd zone v2`);
+    res.send(`Welcome to Storm CICD server - update cicd zone v2 or logs`);
 })
 
 https.createServer({
