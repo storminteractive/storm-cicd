@@ -1,7 +1,6 @@
 const { exec } = require("child_process");
 const express = require('express');
 const https = require('https');
-const path = require('path');
 const morgan = require('morgan');
 const fs = require('fs');
 const validator = require('validator');
@@ -10,7 +9,8 @@ const app = express();
 const port = process.env.PORT || 4000;
 //app.use(morgan('combined'));
 
-const updateCommand = "/root/scripts/refresh-cicd.sh";
+const updateCi = "/root/scripts/refresh-cicd.sh";
+const updateZone = "/root/scripts/refresh-zone-update.sh";
 
 const ex = (cmd,cb) =>{
     exec(cmd, (error, stdout, stderr) => {
@@ -38,11 +38,12 @@ app.get('/update/:app/', (req,res)=>{
     if(!lettersNumbers(app)) {res.send("Invalid app name"); console.log("Invalid app name"); return; }
     res.send(`Received an update for an app ${app}`);
     console.log("Will update app "+app);
-    ex(updateCommand);
+    if(app==="cicd") ex(updateCi);
+    if(app==="zone") ex(updateZone);
 })
 
 app.get('*', (req,res)=>{
-    res.send(`Welcome to Storm CICD server - update appname v2`);
+    res.send(`Welcome to Storm CICD server - update cicd zone v2`);
 })
 
 https.createServer({
