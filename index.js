@@ -53,7 +53,7 @@ app.get('/logs',(req,res)=>{
         r = exRet(logsCmd+" "+defaultLines);
     } else {
         if (!validator.isNumeric(req.query.lines)) {r = "Invalid num lines" }
-        else { r = exRet(logsCmd+" lines="+req.query.lines); }
+        else { r = exRet(logsCmd+" --lines="+req.query.lines); }
     }
     
     res.send(nl2br(r));
