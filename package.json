@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/storminteractive/storm-cicd#readme",
   "dependencies": {
+    "chalk": "^4.1.1",
     "express": "^4.17.1",
     "https": "^1.0.0",
     "morgan": "^1.9.1",

@@ -5,17 +5,20 @@ const morgan = require('morgan');
 const fs = require('fs');
 const validator = require('validator');
 const nl2br  = require('nl2br');
+const chalk = require('chalk');
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = 2005;
 app.use(morgan('combined'));
 
-const updateCi = "/root/scripts/refresh-cicd.sh";
-const updateZone = "/root/scripts/refresh-zone-update.sh";
+let restartFrontend = "/apps/storm-cicd/refresh-frontend.sh";
+let restartBackend = "/apps/storm-cicd/refresh-backend.sh";
+
 const logsCmd = "/usr/bin/pm2 logs --nostream"
 const defaultLines = "--lines 100";
 
 const ex = (cmd,cb) =>{
+    console.log(chalk.green("ex -> cmd", cmd));
     exec(cmd, (error, stdout, stderr) => {
         if (error) {
             console.log(`Error: ${error.message}`);
@@ -41,11 +44,23 @@ const lettersNumbers = (str) => {
 
 app.all('/update/:app/', (req,res)=>{
     let app = req.params.app;
+    let remoteIp = req.socket.remoteAddress.replace(/^.*:/, '');
+    
     if(!lettersNumbers(app)) {res.send("Invalid app name"); console.log("Invalid app name"); return; }
-    res.send(`Received an update for an app ${app}`);
-    console.log("Will update app "+app);
-    if(app==="cicd") ex(updateCi);
-    if(app==="zone") ex(updateZone);
+    
+    res.send(`Received a requst for app ${app} from IP ${remoteIp}`);
+    console.log(chalk.cyan(`Received a requst for app ${app} from IP ${remoteIp}`));
+
+    if(app==="frontend-999") {
+        console.log(chalk.yellow(`Will update app ${app}`));
+	    ex(restartFrontend);
+    }
+
+    if(app==="backend-999") {
+        console.log(chalk.yellow(`Will update app ${app}`));
+        ex(restartBackend);
+    }
+
 })
 
 app.get('/logs',(req,res)=>{
