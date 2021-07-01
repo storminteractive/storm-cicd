@@ -63,6 +63,7 @@ app.all('/update/:app/', (req,res)=>{
 
 })
 
+/*
 app.get('/logs',(req,res)=>{
     let r = "";
     if(!req.query.lines){
@@ -74,6 +75,7 @@ app.get('/logs',(req,res)=>{
     
     res.send(nl2br(r));
 })
+*/
 
 app.all('*', (req,res)=>{
     res.send(`Welcome to Storm CICD server - update cicd zone v2 or logs with optional lines`);
