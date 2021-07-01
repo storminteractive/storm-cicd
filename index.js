@@ -78,7 +78,7 @@ app.get('/logs',(req,res)=>{
 */
 
 app.all('*', (req,res)=>{
-    res.send(`Welcome to Storm CICD server - update cicd zone v2 or logs with optional lines`);
+    res.send(`Storm CICD server v1.2`);
 })
 
 https.createServer({
